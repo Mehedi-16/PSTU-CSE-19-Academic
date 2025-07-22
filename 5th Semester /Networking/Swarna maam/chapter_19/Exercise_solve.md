@@ -198,8 +198,114 @@
 ---
 
 ## ✅ 18. Redo Exercise 17 and add address `153.18.9.0` for the authoritative server  
-**Answer:** Add A record to additional section  
-**Explanation:** অতিরিক্ত অংশে authoritative server এর IP (A record) যুক্ত করা হয়।
+**Answer:** একদম ঠিক! তুমি এখন Example 19.1-এর query message-এর জন্য এমন একটি **response message** চাচ্ছো, যেখানে থাকবে:
+
+---
+
+## ✅ তিনটি Section:
+
+1. **Answer Section** → chal.fhda.edu → A record  
+2. **Authoritative Section** → fhda.edu → NS record → `ns1.fhda.edu.`  
+3. **Additional Section** → `ns1.fhda.edu.` → A record → `153.18.9.0`
+
+---
+
+# 📘 Final Response Message Structure
+
+---
+
+## 🔹 1. Header (12 bytes)
+
+| Field     | Value     | Meaning |
+|-----------|-----------|---------|
+| ID        | `0x1333`  | Same as query  
+| Flags     | `0x8580`  | QR=1, AA=1, RD=1, RA=1  
+| QDCOUNT   | `0x0001`  | One question  
+| ANCOUNT   | `0x0001`  | One answer  
+| NSCOUNT   | `0x0001`  | One authoritative record  
+| ARCOUNT   | `0x0001`  | One additional record ✅
+
+---
+
+## 🔹 2. Question Section (chal.fhda.edu)
+
+| Field     | Value     | Size |
+|-----------|-----------|------|
+| QNAME     | `chal.fhda.edu.` → 15 bytes  
+| QTYPE     | `0x0001` (A) → 2 bytes  
+| QCLASS    | `0x0001` (IN) → 2 bytes  
+| **Total** |           | **19 bytes**
+
+---
+
+## 🔹 3. Answer Section
+
+| Field     | Value               | Size |
+|-----------|---------------------|------|
+| NAME      | `C00C` (pointer to QNAME) → 2  
+| TYPE      | `0x0001` (A) → 2  
+| CLASS     | `0x0001` (IN) → 2  
+| TTL       | `0x00015180` (86400 sec) → 4  
+| RDLENGTH  | `0x0004` → 2  
+| RDATA     | `0xC022170C` → IP: 192.34.23.12 → 4  
+| **Total** |                     | **16 bytes**
+
+---
+
+## 🔹 4. Authoritative Section
+
+| Field     | Value               | Size |
+|-----------|---------------------|------|
+| NAME      | `C011` (pointer to `fhda.edu`) → 2  
+| TYPE      | `0x0002` (NS) → 2  
+| CLASS     | `0x0001` (IN) → 2  
+| TTL       | `0x00015180` → 4  
+| RDLENGTH  | `0x000F` → 2  
+| RDATA     | `06 ns1 04 fhda 03 edu 00` → `ns1.fhda.edu.` → 15  
+| **Total** |                     | **27 bytes**
+
+---
+
+## 🔹 5. Additional Section
+
+| Field     | Value               | Size |
+|-----------|---------------------|------|
+| NAME      | `C02A` (pointer to `ns1.fhda.edu`) → 2  
+| TYPE      | `0x0001` (A) → 2  
+| CLASS     | `0x0001` (IN) → 2  
+| TTL       | `0x00015180` → 4  
+| RDLENGTH  | `0x0004` → 2  
+| RDATA     | `0x990C1200` → IP: 153.18.9.0 → 4  
+| **Total** |                     | **16 bytes**
+
+---
+
+## 🔹 Total Message Size
+
+| Section         | Size |
+|-----------------|------|
+| Header          | 12  
+| Question        | 19  
+| Answer          | 16  
+| Authoritative   | 27  
+| Additional      | 16  
+| **Total**       | **90 bytes**
+
+---
+
+## ✅ Final Summary
+
+| Section         | Content                          |
+|-----------------|----------------------------------|
+| **Answer**       | chal.fhda.edu → 192.34.23.12  
+| **Authoritative**| fhda.edu → NS → ns1.fhda.edu  
+| **Additional**   | ns1.fhda.edu → A → 153.18.9.0  
+
+---
+
+### 🧠 ব্যাখ্যা (বাংলায়, ২ লাইনে):
+
+এই response message-এ chal.fhda.edu-এর IP দেওয়া হয়েছে, fhda.edu-এর NS server define করা হয়েছে, এবং সেই NS server-এর IP address (153.18.9.0) দেওয়া হয়েছে additional section-এ।
 
 ---
 
