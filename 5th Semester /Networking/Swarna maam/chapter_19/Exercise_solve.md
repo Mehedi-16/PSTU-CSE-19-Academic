@@ -107,8 +107,93 @@
 ---
 
 ## ✅ 17. Redo Example 19.1 with one answer and one authoritative record  
-**Answer:** Add NS record to authority section  
-**Explanation:** উত্তর অংশে IP ও authority অংশে authoritative server এর নাম যুক্ত হয়।
+**Answer:** ধন্যবাদ Mehedi! তুমি Example 19.1-এর query message চাচ্ছো **response message** হিসেবে পুনর্গঠন করতে, যেখানে থাকবে:
+
+- ✅ **One Answer Record** → IP address for `chal.fhda.edu`  
+- ✅ **One Authoritative Record** → NS record that defines `fhda.edu.` as the authoritative zone
+
+চলো ধাপে ধাপে **response message** বানাই:
+
+---
+
+# 📘 Reconstructed Response Message for Example 19.1
+
+---
+
+## 🔹 1. Header Section (12 bytes)
+
+| Field         | Value         | Meaning |
+|---------------|---------------|---------|
+| ID            | `0x1333`      | Same as query  
+| Flags         | `0x8580`      | QR=1 (response), AA=1, RD=1, RA=1  
+| QDCOUNT       | `0x0001`      | One question  
+| ANCOUNT       | `0x0001`      | One answer  
+| NSCOUNT       | `0x0001`      | One authoritative record  
+| ARCOUNT       | `0x0000`      | No additional records
+
+---
+
+## 🔹 2. Question Section (same as query)
+
+- QNAME = `chal.fhda.edu.` → label-encoded:  
+  `04 63 68 61 6C` → `chal`  
+  `04 66 68 64 61` → `fhda`  
+  `03 65 64 75` → `edu`  
+  `00` → end  
+  → **13 bytes**
+
+- QTYPE = `0x0001` (A record)  
+- QCLASS = `0x0001` (IN)  
+→ **Total = 13 + 2 + 2 = 17 bytes**
+
+---
+
+## 🔹 3. Answer Section (A Record for chal.fhda.edu)
+
+| Field      | Value           | Size |
+|------------|------------------|------|
+| NAME       | `C00C` (pointer to QNAME) | 2  
+| TYPE       | `0x0001` (A)     | 2  
+| CLASS      | `0x0001` (IN)    | 2  
+| TTL        | `0x00015180` (86400 sec) | 4  
+| RDLENGTH   | `0x0004`         | 2  
+| RDATA      | `0xC022170C` (IP: 192.34.23.12) | 4  
+→ **Total = 16 bytes**
+
+---
+
+## 🔹 4. Authoritative Section (NS Record for fhda.edu)
+
+| Field      | Value           | Size |
+|------------|------------------|------|
+| NAME       | `C011` (pointer to `fhda.edu`) | 2  
+| TYPE       | `0x0002` (NS)    | 2  
+| CLASS      | `0x0001` (IN)    | 2  
+| TTL        | `0x00015180`     | 4  
+| RDLENGTH   | `0x000F`         | 2  
+| RDATA      | `06 ns1 04 fhda 03 edu 00` → `ns1.fhda.edu.` | 15  
+→ **Total = 27 bytes**
+
+---
+
+## 🔹 5. Total Message Size
+
+| Section         | Size |
+|-----------------|------|
+| Header          | 12  
+| Question        | 17  
+| Answer          | 16  
+| Authoritative   | 27  
+| **Total**       | **72 bytes**
+
+---
+
+## ✅ Final Response Summary
+
+- **chal.fhda.edu → 192.34.23.12** (A record)  
+- **fhda.edu → ns1.fhda.edu** (NS record)
+
+---
 
 ---
 
