@@ -1,0 +1,150 @@
+
+
+# 🌐 DNS Message Format – বিস্তারিত বিশ্লেষণ
+
+DNS মেসেজ হলো DNS ক্লায়েন্ট ও সার্ভারের মধ্যে তথ্য আদান-প্রদানের জন্য নির্ধারিত একটি ফরম্যাট। এটি মূলত দুই ধরনের হয়:
+
+- **Query Message**: ক্লায়েন্ট যখন DNS Resolver-এর কাছে কোনো ডোমেইনের IP address জানতে চায়
+- **Response Message**: সার্ভার সেই অনুরোধের উত্তর দেয়, যেখানে IP address বা error code থাকে
+
+---
+
+## 📦 DNS Message Structure – ৫টি অংশ
+
+প্রতিটি DNS মেসেজে থাকে নিচের ৫টি অংশ:
+
+| Serial | Section Name         | Query Message | Response Message |
+|--------|----------------------|---------------|------------------|
+| 1️⃣     | Header               | ✅ থাকে        | ✅ থাকে           |
+| 2️⃣     | Question Section     | ✅ থাকে        | ✅ থাকে           |
+| 3️⃣     | Answer Section       | ❌ থাকে না     | ✅ থাকে           |
+| 4️⃣     | Authority Section    | ❌ থাকে না     | ✅ থাকে           |
+| 5️⃣     | Additional Section   | ❌ থাকে না     | ✅ থাকে           |
+
+---
+
+## 🧾 1. Header (12 bytes fixed)
+
+### 🔹 Query Message Header
+
+| Field           | Value Example | Description |
+|----------------|---------------|-------------|
+| Identification | 0x1234        | ক্লায়েন্ট ও সার্ভার মেসেজ মিলানোর জন্য |
+| Flags           | QR=0, RD=1    | Query type, recursion চাওয়া হয়েছে |
+| QDCOUNT         | 1             | ১টি প্রশ্ন আছে |
+| ANCOUNT         | 0             | উত্তর নেই |
+| NSCOUNT         | 0             | Authority info নেই |
+| ARCOUNT         | 0             | অতিরিক্ত info নেই |
+
+### 🔹 Response Message Header
+
+| Field           | Value Example | Description |
+|----------------|---------------|-------------|
+| Identification | 0x1234        | ক্লায়েন্টের ID-এর সাথে মিল |
+| Flags           | QR=1, RA=1, RCODE=0 | Response, recursion available, no error |
+| QDCOUNT         | 1             | প্রশ্নের সংখ্যা |
+| ANCOUNT         | 1             | ১টি উত্তর |
+| NSCOUNT         | 1             | ১টি authority record |
+| ARCOUNT         | 1             | ১টি additional record |
+
+---
+
+## 🎛️ Flags Field Breakdown
+
+| Subfield | Bits | Query Value | Response Value | Description |
+|----------|------|-------------|----------------|-------------|
+| QR       | 1    | 0           | 1              | Query or Response |
+| Opcode   | 4    | 0           | 0              | Standard Query |
+| AA       | 1    | 0           | 1              | Authoritative Answer |
+| TC       | 1    | 0           | 0              | Truncated Message |
+| RD       | 1    | 1           | 1              | Recursion Desired |
+| RA       | 1    | 0           | 1              | Recursion Available |
+| Z        | 3    | 0           | 0              | Reserved |
+| RCODE    | 4    | 0           | 0              | Response Code (0 = No Error) |
+
+---
+
+## ❓ 2. Question Section
+
+| Field   | Example Value        | Description |
+|---------|----------------------|-------------|
+| QNAME   | `www.example.com`    | যে ডোমেইনের IP address চাওয়া হয়েছে |
+| QTYPE   | `A`                  | IPv4 address |
+| QCLASS  | `IN`                 | Internet class |
+
+✅ Query ও Response Message—উভয়েই থাকে
+
+---
+
+## ✅ 3. Answer Section (Response Only)
+
+| Field     | Example Value        | Description |
+|-----------|----------------------|-------------|
+| NAME      | `www.example.com`    | প্রশ্ন করা ডোমেইন |
+| TYPE      | `A`                  | IPv4 address |
+| CLASS     | `IN`                 | Internet |
+| TTL       | `3600`               | Cache duration |
+| RDLENGTH  | `4`                  | Data length |
+| RDATA     | `93.184.216.34`      | Actual IP address |
+
+❌ Query Message-এ থাকে না
+
+---
+
+## 🛡️ 4. Authority Section (Response Only)
+
+| Field     | Example Value        | Description |
+|-----------|----------------------|-------------|
+| NAME      | `example.com`        | Zone name |
+| TYPE      | `NS`                 | Name server |
+| CLASS     | `IN`                 | Internet |
+| TTL       | `86400`              | Cache duration |
+| RDLENGTH  | `16`                 | Length |
+| RDATA     | `ns1.example.com`    | Authoritative NS info |
+
+---
+
+## ➕ 5. Additional Section (Response Only)
+
+| Field     | Example Value        | Description |
+|-----------|----------------------|-------------|
+| NAME      | `ns1.example.com`    | Related domain |
+| TYPE      | `A`                  | IPv4 address |
+| CLASS     | `IN`                 | Internet |
+| TTL       | `86400`              | Cache duration |
+| RDLENGTH  | `4`                  | Length |
+| RDATA     | `192.0.2.1`          | NS-এর IP address |
+
+---
+
+## 📊 DNS Message Flowchart (Query & Response)
+
+```plantuml
+@startuml
+title DNS Message Structure
+
+participant Client
+participant DNS Server
+
+Client -> DNS Server : Send Query Message
+DNS Server -> Client : Send Response Message
+
+note right of Client
+Query Message:
+- Header
+- Question Section
+end note
+
+note left of DNS Server
+Response Message:
+- Header
+- Question
+- Answer
+- Authority
+- Additional
+end note
+
+@enduml
+```
+
+---
