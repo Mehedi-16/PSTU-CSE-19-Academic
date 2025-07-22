@@ -1,220 +1,223 @@
-# TCP BOOK
+# 📘 DNS Chapter 19.15 – Practice Set Answers (English Questions & Answers with Bengali Explanation)
+
+## ✅ 1. Determine FQDN or PQDN:
+
+| Domain                | Type  | Explanation (বাংলায়)                          |
+|------------------------|--------|-----------------------------------------------|
+| a. xxx               | PQDN   | এটি একটি আংশিক নাম কারণ শেষে ডট (.) নেই।        |
+| b. xxx.yyy.          | FQDN   | ডট (.) দিয়ে শেষ হওয়ায় এটি একটি সম্পূর্ণ নাম।     |
+| c. xxx.yyy.net       | PQDN   | ডোমেইন সম্পূর্ণ নয়, শেষে ডট (.) নেই।            |
+| d. zzz.yyy.xxx.edu.  | FQDN   | এটি একটি সম্পূর্ণ ডোমেইন নাম; শেষে ডট রয়েছে।     |
 
 ---
 
-**1. Determine FQDN or PQDN:**
-a. xxx → PQDN
-b. xxx.yyy. → FQDN
-c. xxx.yyy.net → PQDN
-d. zzz.yyy.xxx.edu. → FQDN
-**ব্যাখ্যা:** FQDN-এর শেষে ডট (.) থাকে, PQDN-এ থাকে না।
+## ✅ 2. Determine FQDN or PQDN:
+
+| Domain            | Type  | Explanation (বাংলায়)                                |
+|-------------------|--------|-----------------------------------------------------|
+| a. mil.          | FQDN  | শেষে ডট থাকায় এটি সম্পূর্ণ ডোমেইন নাম।                  |
+| b. edu.          | PQDN  | এটি সাধারণ নাম, শেষ ডট নেই, তাই এটি PQDN।              |
+| c. xxx.yyy.net   | PQDN  | সম্পূর্ণ নয়, এটি PQDN কারণ ডট দিয়ে শেষ হয়নি।            |
+| d. zzz.yyy.xxx.edu | PQDN | শেষ ডট না থাকায় এটি একটি আংশিক PQDN।                  |
 
 ---
 
-**2. Determine FQDN or PQDN:**
-a. mil. → FQDN
-b. edu. → PQDN
-c. xxx.yyy.net → PQDN
-d. zzz.yyy.xxx.edu → PQDN
-**ব্যাখ্যা:** শেষে ডট (.) না থাকলে তা PQDN; সম্পূর্ণ নাম সহ ডট থাকলে FQDN।
+## ✅ 3. What is the flags field value (in hex) for a query requesting address and demanding recursion?  
+**Answer:** `0x0100`  
+**Explanation:** এটি standard query যেখানে recursion desired (RD) ফ্ল্যাগ সেট থাকে।
 
 ---
 
-**3. Flags field value (hex) for query needing address + recursion:**
-**Answer:** `0x0100`
-**ব্যাখ্যা:** Standard query (0), recursion desired (RD = 1), বাকি সব 0।
+## ✅ 4. What is the flags field value (in hex) for an inverse response with recursion not available?  
+**Answer:** `0x8580`  
+**Explanation:** এটি একটি উত্তর বার্তা যেখানে নাম পাওয়া যায়নি (RCODE=3) এবং recursion ছিল না।
 
 ---
 
-**4. Flags field for inverse response, recursion requested but not available:**
-**Answer:** `0x8580`
-**ব্যাখ্যা:** Response = 1, Opcode = 0, AA = 0, TC = 0, RD = 1, RA = 0, RCODE = 3 (Name Error)।
+## ✅ 5. Analyze the flag `0x8F80`  
+**Answer:** Response with AA, RD, RA set; no error (RCODE=0)  
+**Explanation:** এটি একটি সফল authoritative উত্তর নির্দেশ করে।
 
 ---
 
-**5. Analyze flag 0x8F80:**
-**Answer:** Response, AA, RD, RA set; RCODE = 0
-**ব্যাখ্যা:** এটি একটি authoritative successful response বোঝায়।
+## ✅ 6. Analyze the flag `0x0503`. Is it valid?  
+**Answer:** No, it's invalid  
+**Explanation:** এখানে QR=0 কিন্তু RCODE ≠ 0, যা বৈধ নয়।
 
 ---
 
-**6. Analyze flag 0x0503 – Is it valid?**
-**Answer:** No
-**ব্যাখ্যা:** Opcode 2 বোঝায় সার্ভার ফেইলর, কিন্তু AA, QR একসাথে false হওয়া ঠিক নয়।
+## ✅ 7. Is the size of a question record fixed?  
+**Answer:** No  
+**Explanation:** প্রশ্নে থাকা ডোমেইন নামের দৈর্ঘ্য ভিন্ন হয়, তাই সাইজ নির্দিষ্ট নয়।
 
 ---
 
-**7. Is size of question record fixed?**
-**Answer:** No
-**ব্যাখ্যা:** প্রশ্নে থাকা নামের দৈর্ঘ্য ভিন্ন হতে পারে, তাই সাইজ ভিন্ন হয়।
+## ✅ 8. Is the size of a resource record fixed?  
+**Answer:** No  
+**Explanation:** রিসোর্স রেকর্ডের নাম ও ডেটা ভিন্ন হয়, তাই এর আকার পরিবর্তনশীল।
 
 ---
 
-**8. Is size of resource record fixed?**
-**Answer:** No
-**ব্যাখ্যা:** Resource record-এর নাম ও তথ্য ভিন্ন ভিন্ন হওয়ায় সাইজও পরিবর্তনশীল।
+## ✅ 9. What is the size of a question record containing the domain name `fhda.edu`?  
+**Answer:** Around 16 bytes  
+**Explanation:** নামসহ অন্যান্য ফিল্ড যোগ করে আনুমানিক ১৬ বাইট হয়।
 
 ---
 
-**9. Size of question record for domain name “fhda.edu”?**
-**Answer:** 16 bytes
-**ব্যাখ্যা:** নাম 9 bytes + 2 (type) + 2 (class) = 13; কিন্তু নামের compression হলে কমেও হতে পারে।
+## ✅ 10. What is the size of a question record containing an IP address?  
+**Answer:** Not applicable  
+**Explanation:** প্রশ্ন রেকর্ডে IP address ব্যবহার হয় না, শুধুমাত্র নাম থাকে।
 
 ---
 
-**10. Size of question record containing an IP address?**
-**Answer:** Not applicable (Invalid)
-**ব্যাখ্যা:** প্রশ্ন রেকর্ডে IP address থাকে না; এটি ডোমেইন নামের জন্য হয়।
-
-
----
-
-**11. Size of a resource record containing the domain name fhda.edu?**
-**Answer:** \~28 bytes
-**ব্যাখ্যা:** নামের দৈর্ঘ্য (9 bytes), টাইপ (2), ক্লাস (2), TTL (4), RDLENGTH (2), RDATA (যেমন IP হলে 4)।
+## ✅ 11. What is the size of a resource record containing `fhda.edu`?  
+**Answer:** Around 28 bytes  
+**Explanation:** নাম, টাইপ, ক্লাস, TTL ও RDATA মিলিয়ে প্রায় ২৮ বাইট হয়।
 
 ---
 
-**12. Size of a resource record containing an IP address?**
-**Answer:** \~28 bytes
-**ব্যাখ্যা:** IP address RDATA হিসেবে 4 bytes হয়, বাকি অংশগুলোও যোগ হয়।
+## ✅ 12. What is the size of a resource record containing an IP address?  
+**Answer:** Around 28 bytes  
+**Explanation:** IP RDATA হিসেবে ৪ বাইট, সঙ্গে অন্যান্য ফিল্ড যুক্ত হয়।
 
 ---
 
-**13. Size of query message for challenger.atc.fhda.edu?**
-**Answer:** \~33 bytes
-**ব্যাখ্যা:** Header (12 bytes) + Name (22) + QTYPE (2) + QCLASS (2) = 38 (variable based on name length)।
+## ✅ 13. What is the size of a query message requesting the IP for `challenger.atc.fhda.edu`?  
+**Answer:** Around 33 bytes  
+**Explanation:** নাম বড় হওয়ায় মেসেজের আকার একটু বেশি হয়।
 
 ---
 
-**14. Size of query message requesting domain name for 185.34.23.12?**
-**Answer:** \~45 bytes
-**ব্যাখ্যা:** Reverse DNS query format (in-addr.arpa) ব্যবহার হয়, তাই নাম বড় হয়।
+## ✅ 14. What is the size of a query requesting the domain name for `185.34.23.12`?  
+**Answer:** Around 45 bytes  
+**Explanation:** এটি একটি reverse DNS lookup, যেখানে নামটি বড় হয় (`in-addr.arpa`)।
 
 ---
 
-**15. Size of response to query 13:**
-**Answer:** \~65 bytes
-**ব্যাখ্যা:** Query (header + question) + answer section সহ resource record যুক্ত হয়।
+## ✅ 15. What is the size of the response to query in 13?  
+**Answer:** Around 65 bytes  
+**Explanation:** প্রশ্নসহ উত্তর রিসোর্স রেকর্ড যোগ হয় বলে আকার বাড়ে।
 
 ---
 
-**16. Size of response to query 14:**
-**Answer:** \~75 bytes
-**ব্যাখ্যা:** উত্তরসহ reverse lookup record যুক্ত হওয়ায় আকার বাড়ে।
+## ✅ 16. What is the size of the response to query in 14?  
+**Answer:** Around 75 bytes  
+**Explanation:** PTR রেকর্ড সহ উত্তর দেয়ায় আকার বেশি হয়।
 
 ---
 
-**17. Redo Example 19.1 with one answer & one authoritative record**
-**Answer:** Add authority section
-**ব্যাখ্যা:** Answer section থাকবে IP সহ এবং authoritative section-এ থাকবে SOA বা NS record।
+## ✅ 17. Redo Example 19.1 with one answer and one authoritative record  
+**Answer:** Add NS record to authority section  
+**Explanation:** উত্তর অংশে IP ও authority অংশে authoritative server এর নাম যুক্ত হয়।
 
 ---
 
-**18. Redo 17 and add record with IP 153.18.9.0**
-**Answer:** Add extra section
-**ব্যাখ্যা:** Additional section-এ authoritative server এর IP address (A record) দেওয়া হবে।
+## ✅ 18. Redo Exercise 17 and add address `153.18.9.0` for the authoritative server  
+**Answer:** Add A record to additional section  
+**Explanation:** অতিরিক্ত অংশে authoritative server এর IP (A record) যুক্ত করা হয়।
 
 ---
 
-**19. Query message for xxx.yyy.com:**
-**Answer:** Header + QNAME + QTYPE=A + QCLASS=IN
-**ব্যাখ্যা:** স্ট্যান্ডার্ড DNS query ফরম্যাট অনুযায়ী তৈরি করতে হবে।
+## ✅ 19. A DNS client queries for IP of `xxx.yyy.com`  
+**Answer:** Standard query with QTYPE = A  
+**Explanation:** এটি একটি সাধারণ নাম-থেকে-IP খোঁজার অনুরোধ।
 
 ---
 
-**20. Response message with IP = 201.34.23.12:**
-**Answer:** Header + Question + Answer section with IP
-**ব্যাখ্যা:** উত্তর অংশে xxx.yyy.com এর জন্য A record থাকবে।
+## ✅ 20. DNS server response with IP = `201.34.23.12`  
+**Answer:** Response with A record in answer section  
+**Explanation:** উত্তর অংশে `xxx.yyy.com` এর জন্য IP দেওয়া হয়।
 
 ---
 
-**21. Query for xxx.yyy.com and aaa.bbb.edu:**
-**Answer:** Single query message with QDCOUNT = 2
-**ব্যাখ্যা:** দুটি প্রশ্ন একই মেসেজে পাঠানো যেতে পারে DNS প্রোটোকলে।
+## ✅ 21. DNS client queries for IPs of `xxx.yyy.com` and `aaa.bbb.edu`  
+**Answer:** Query with QDCOUNT = 2  
+**Explanation:** একাধিক প্রশ্ন একই মেসেজে পাঠানো হয়।
 
 ---
 
-**22. Response to 21 with two IPs:**
-**Answer:** Two answer records
-**ব্যাখ্যা:** প্রতিটি ডোমেইনের জন্য আলাদা A record থাকবে উত্তর অংশে।
+## ✅ 22. DNS response with IPs = `14.23.45.12` and `131.34.67.89`  
+**Answer:** Two A records in answer section  
+**Explanation:** প্রতিটি নামের জন্য আলাদা IP রেকর্ড থাকে।
 
 ---
 
-**23. Response: one resolved, one failed:**
-**Answer:** One answer, one name error
-**ব্যাখ্যা:** একটি ডোমেইনের জন্য A record, অন্যটির জন্য RCODE = 3 (name error) থাকবে।
+## ✅ 23. DNS resolves only first name  
+**Answer:** One A record, one Name Error  
+**Explanation:** দ্বিতীয় নাম না পাওয়া গেলে RCODE=3 (Name error) হয়।
 
 ---
 
-**24. Query for name of IP 132.1.17.8:**
-**Answer:** PTR query to 8.17.1.132.in-addr.arpa
-**ব্যাখ্যা:** Reverse lookup DNS query হয় PTR টাইপ দিয়ে।
+## ✅ 24. Query for name of IP `132.1.17.8`  
+**Answer:** PTR query to `8.17.1.132.in-addr.arpa`  
+**Explanation:** এটি reverse DNS query হয়, নাম খোঁজার জন্য।
 
 ---
 
-**25. Response to 24:**
-**Answer:** PTR record with domain name
-**ব্যাখ্যা:** উত্তর অংশে নাম যেমন: host.example.com থাকবে।
+## ✅ 25. Response to query 24  
+**Answer:** PTR record with domain name  
+**Explanation:** IP address কোন নামের সঙ্গে যুক্ত তা জানায়।
 
 ---
 
-**26. Encapsulate query in UDP:**
-**Answer:** UDP header + DNS query
-**ব্যাখ্যা:** UDP header 8 bytes হয়, এরপর DNS query message যুক্ত হয়।
+## ✅ 26. Encapsulate query message of 24 in UDP  
+**Answer:** UDP header + DNS query  
+**Explanation:** ৮ বাইটের UDP হেডারসহ DNS কোয়েরি পাঠানো হয়।
 
 ---
 
-**27. Encapsulate response in UDP:**
-**Answer:** UDP header + DNS response
-**ব্যাখ্যা:** UDP segment response message সহ encapsulated হয়।
+## ✅ 27. Encapsulate response of 25 in UDP  
+**Answer:** UDP header + DNS response  
+**Explanation:** DNS উত্তর UDP প্যাকেট হিসেবে পাঠানো হয়।
 
 ---
 
-**28. Compare DNS with UNIX directory structure:**
-**Answer:** Both are hierarchical
-**ব্যাখ্যা:** DNS নাম যেমন রুট থেকে নিচে যায়, UNIX path ও তাই।
+## ✅ 28. Compare DNS and UNIX directory structures  
+**Answer:** Both are hierarchical  
+**Explanation:** DNS ও UNIX উভয়ই গাছের মতো স্তরভিত্তিক গঠন অনুসরণ করে।
 
 ---
 
-**29. Equivalent of dots in DNS to UNIX:**
-**Answer:** Slashes (/)
-**ব্যাখ্যা:** DNS-এ ‘.’ দ্বারা স্তর আলাদা হয়, UNIX-এ ‘/’ দিয়ে।
+## ✅ 29. DNS dots equivalent in UNIX  
+**Answer:** Slash (`/`)  
+**Explanation:** DNS-এ dot (`.`) দ্বারা স্তর বিভাজন হয়, UNIX-এ হয় slash দিয়ে।
 
 ---
 
-**30. Does UNIX pathname go from node to root?**
-**Answer:** No, from root to node
-**ব্যাখ্যা:** UNIX path শুরু হয় রুট (/) থেকে, DNS-এ উল্টো।
+## ✅ 30. Do UNIX paths go from node to root?  
+**Answer:** No, root to node  
+**Explanation:** UNIX path রুট `/` থেকে নিচের দিকে যায়; DNS উল্টোভাবে।
 
 ---
 
-**31. Are FQDNs = absolute paths, PQDNs = relative paths?**
-**Answer:** Yes
-**ব্যাখ্যা:** FQDN পূর্ণ ঠিকানা বোঝায়, PQDN আপেক্ষিক নাম।
+## ✅ 31. FQDN = absolute path, PQDN = relative path?  
+**Answer:** Yes  
+**Explanation:** FQDN সম্পূর্ণ ঠিকানা বোঝায়, PQDN আংশিক বা আপেক্ষিক।
 
 ---
 
-**32. How to use nslookup in Windows:**
-**Answer:** Open cmd → type `nslookup`
-**ব্যাখ্যা:** nslookup দিয়ে ডোমেইনের IP বা রেকর্ড দেখা যায়।
+## ✅ 32. How to use `nslookup` in Windows?  
+**Answer:** Open CMD → Type `nslookup`  
+**Explanation:** এটি DNS নাম ও IP খোঁজার কমান্ড লাইন টুল।
 
 ---
 
-**33. All options of nslookup:**
-**Answer:** set type, set timeout, set debug, etc.
-**ব্যাখ্যা:** `nslookup –help` দিয়ে সব অপশন দেখা যায়।
+## ✅ 33. All options of `nslookup`  
+**Answer:** `set type`, `set timeout`, `set debug`, etc.  
+**Explanation:** nslookup এ বিভিন্ন সেটিং পরিবর্তন করা যায়।
 
 ---
 
-**34. Try nslookup on a domain:**
-**Answer:** `nslookup www.google.com`
-**ব্যাখ্যা:** এটি Google এর IP address দেখাবে।
+## ✅ 34. Try `nslookup` on a known domain  
+**Command:** `nslookup www.google.com`  
+**Explanation:** Google এর IP address দেখাবে।
 
 ---
 
-**35. Use nslookup for commercial servers:**
-**Answer:** Example: `nslookup www.amazon.com`
-**ব্যাখ্যা:** amazon, facebook ইত্যাদির জন্য nslookup ব্যবহার করে IP পাওয়া যায়।
+## ✅ 35. Use `nslookup` on commercial servers  
+**Command:**  
+- `nslookup www.amazon.com`  
+- `nslookup www.facebook.com`  
+**Explanation:** এসব সার্ভারের IP address দেখতে পাওয়া যাবে।
 
 ---
