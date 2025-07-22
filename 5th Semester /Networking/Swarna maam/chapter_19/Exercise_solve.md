@@ -320,45 +320,178 @@
 
 ---
 
-## ✅ 21. DNS client queries for IPs of `xxx.yyy.com` and `aaa.bbb.edu`  
-**Answer:** Query with QDCOUNT = 2  
-**Explanation:** একাধিক প্রশ্ন একই মেসেজে পাঠানো হয়।
+অসাধারণ সিরিজ, Mehedi! তুমি DNS-এর উপর পুরো exercise set চাচ্ছো—**Exercise 21–27**—সবগুলো query ও response message সহ, including **UDP encapsulation**. চলো একসাথে সাজিয়ে দিই, যাতে তুমি সহজে রিভিশন করতে পারো বা presentation-ready বানাতে পারো।
 
 ---
 
-## ✅ 22. DNS response with IPs = `14.23.45.12` and `131.34.67.89`  
-**Answer:** Two A records in answer section  
-**Explanation:** প্রতিটি নামের জন্য আলাদা IP রেকর্ড থাকে।
+# 📘 DNS Exercises 21–27: Full Breakdown
 
 ---
 
-## ✅ 23. DNS resolves only first name  
-**Answer:** One A record, one Name Error  
-**Explanation:** দ্বিতীয় নাম না পাওয়া গেলে RCODE=3 (Name error) হয়।
+## 🔹 **21. DNS Query for Two Domains**
+
+> A DNS client is looking for the IP addresses corresponding to `xxx.yyy.com` and `aaa.bbb.edu`.
+
+### ✅ Query Message Structure
+
+| Section     | Value |
+|-------------|-------|
+| **Header**  |  
+- ID: `0x4321`  
+- Flags: `0x0100` (standard query, RD=1)  
+- QDCOUNT: `0x0002`  
+- ANCOUNT, NSCOUNT, ARCOUNT: `0x0000`  
+→ **12 bytes**
+
+| **Question Section** |  
+1. `xxx.yyy.com.` → QNAME = 13 bytes  
+   - QTYPE = A (2 bytes), QCLASS = IN (2 bytes) → 17 bytes  
+2. `aaa.bbb.edu.` → QNAME = 13 bytes  
+   - QTYPE = A, QCLASS = IN → 17 bytes  
+→ **Total Question Section = 34 bytes**
+
+➡️ **Total Query Message = 12 + 34 = 46 bytes**
 
 ---
 
-## ✅ 24. Query for name of IP `132.1.17.8`  
-**Answer:** PTR query to `8.17.1.132.in-addr.arpa`  
-**Explanation:** এটি reverse DNS query হয়, নাম খোঁজার জন্য।
+## 🔹 **22. DNS Response for Both Domains**
+
+> IPs: `xxx.yyy.com → 14.23.45.12`, `aaa.bbb.edu → 131.34.67.89`
+
+### ✅ Response Message Structure
+
+| Section     | Value |
+|-------------|-------|
+| **Header**  |  
+- ID: `0x4321`  
+- Flags: `0x8180` (QR=1, RD=1, RA=1, RCODE=0)  
+- QDCOUNT: `0x0002`, ANCOUNT: `0x0002`  
+→ **12 bytes**
+
+| **Question Section** | Same as query → 34 bytes  
+| **Answer Section** |  
+1. `xxx.yyy.com.` → A record → IP: `14.23.45.12` → 16 bytes  
+2. `aaa.bbb.edu.` → A record → IP: `131.34.67.89` → 16 bytes  
+→ **Total Answer Section = 32 bytes**
+
+➡️ **Total Response Message = 12 + 34 + 32 = 78 bytes**
 
 ---
 
-## ✅ 25. Response to query 24  
-**Answer:** PTR record with domain name  
-**Explanation:** IP address কোন নামের সঙ্গে যুক্ত তা জানায়।
+## 🔹 **23. DNS Response: First Resolved, Second Failed**
+
+> First domain resolved, second not found
+
+### ✅ Response Message Structure
+
+| Section     | Value |
+|-------------|-------|
+| **Header**  |  
+- ID: `0x4321`  
+- Flags: `0x8183` (RCODE=3 → Name Error)  
+- QDCOUNT: `0x0002`, ANCOUNT: `0x0001`  
+→ **12 bytes**
+
+| **Question Section** | Same as query → 34 bytes  
+| **Answer Section** |  
+1. `xxx.yyy.com.` → A record → IP: `14.23.45.12` → 16 bytes  
+→ **Total Answer Section = 16 bytes**
+
+➡️ **Total Response Message = 12 + 34 + 16 = 62 bytes**
 
 ---
 
-## ✅ 26. Encapsulate query message of 24 in UDP  
-**Answer:** UDP header + DNS query  
-**Explanation:** ৮ বাইটের UDP হেডারসহ DNS কোয়েরি পাঠানো হয়।
+## 🔹 **24. DNS Query for Reverse Lookup**
+
+> IP: `132.1.17.8` → Reverse domain: `8.17.1.132.in-addr.arpa`
+
+### ✅ Query Message Structure
+
+| Section     | Value |
+|-------------|-------|
+| **Header**  |  
+- ID: `0x5678`  
+- Flags: `0x0100`  
+- QDCOUNT: `0x0001`  
+→ **12 bytes**
+
+| **Question Section** |  
+- QNAME = `8.17.1.132.in-addr.arpa.` → label-encoded = 28 bytes  
+- QTYPE = PTR (2 bytes), QCLASS = IN (2 bytes)  
+→ **Total = 32 bytes**
+
+➡️ **Total Query Message = 12 + 32 = 44 bytes**
 
 ---
 
-## ✅ 27. Encapsulate response of 25 in UDP  
-**Answer:** UDP header + DNS response  
-**Explanation:** DNS উত্তর UDP প্যাকেট হিসেবে পাঠানো হয়।
+## 🔹 **25. DNS Response to Reverse Lookup**
+
+> Domain name: `host.example.com`
+
+### ✅ Response Message Structure
+
+| Section     | Value |
+|-------------|-------|
+| **Header**  |  
+- ID: `0x5678`  
+- Flags: `0x8180`  
+- QDCOUNT: `0x0001`, ANCOUNT: `0x0001`  
+→ **12 bytes**
+
+| **Question Section** | Same as query → 32 bytes  
+| **Answer Section** |  
+- NAME = pointer → 2 bytes  
+- TYPE = PTR, CLASS = IN → 4 bytes  
+- TTL = 86400 → 4 bytes  
+- RDLENGTH = 18 bytes  
+- RDATA = `host.example.com.` → label-encoded  
+→ **Total = 30 bytes**
+
+➡️ **Total Response Message = 12 + 32 + 30 = 74 bytes**
+
+---
+
+## 🔹 **26. Encapsulate Query (Exercise 24) in UDP Datagram**
+
+| UDP Header Field | Value |
+|------------------|-------|
+| Source Port      | `0x0035` (53)  
+| Destination Port | `0x00A1` (161)  
+| Length           | `0x003C` (60 bytes = 8 UDP + 52 DNS)  
+| Checksum         | `0x0000` (optional)  
+| Data             | DNS Query Message (44 bytes)
+
+➡️ **UDP Datagram = 8 bytes header + 44 bytes DNS = 52 bytes**
+
+---
+
+## 🔹 **27. Encapsulate Response (Exercise 25) in UDP Datagram**
+
+| UDP Header Field | Value |
+|------------------|-------|
+| Source Port      | `0x0035`  
+| Destination Port | `0x00A1`  
+| Length           | `0x005A` (90 bytes = 8 UDP + 82 DNS)  
+| Checksum         | `0x0000`  
+| Data             | DNS Response Message (74 bytes)
+
+➡️ **UDP Datagram = 8 + 74 = 82 bytes**
+
+---
+
+## ✅ Summary Table
+
+| Exercise | Description                                | Size (approx) |
+|----------|--------------------------------------------|---------------|
+| 21       | Query for two domains                      | 46 bytes  
+| 22       | Response with two IPs                      | 78 bytes  
+| 23       | Response: one success, one failure         | 62 bytes  
+| 24       | Reverse DNS query for IP                   | 44 bytes  
+| 25       | Response with PTR record                   | 74 bytes  
+| 26       | UDP encapsulation of query                 | 52 bytes  
+| 27       | UDP encapsulation of response              | 82 bytes  
+
+---
 
 ---
 
