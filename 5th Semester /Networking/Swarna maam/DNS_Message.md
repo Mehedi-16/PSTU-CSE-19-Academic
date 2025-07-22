@@ -169,6 +169,57 @@ DNS মেসেজ হলো DNS ক্লায়েন্ট ও সার্�
 | RDATA     | `93.184.216.34`      | Actual IP address |
 
 ❌ Query Message-এ থাকে না
+---
+
+---
+
+## ✅ Resource Record (RR) Format Overview
+
+```plaintext
++------------------------------+
+| NAME (variable length)       | ← ডোমেইন নাম
++------------------------------+
+| TYPE (2 bytes)               | ← রেকর্ড টাইপ (A, MX, etc.)
++------------------------------+
+| CLASS (2 bytes)              | ← সাধারণত IN (Internet)
++------------------------------+
+| TTL (4 bytes)                | ← Time to Live (সেকেন্ডে)
++------------------------------+
+| RDLENGTH (2 bytes)           | ← RDATA-এর byte length
++------------------------------+
+| RDATA (variable length)      | ← Actual data (যেমন IP address)
++------------------------------+
+```
+
+---
+
+## 🔍 Field-by-Field ব্যাখ্যা
+
+| Field      | Size     | Description |
+|------------|----------|-------------|
+| **NAME**   | Variable | ডোমেইন নাম (QNAME-এর মতো label-encoded) |
+| **TYPE**   | 2 bytes  | রেকর্ড টাইপ (A = `0x0001`, MX = `0x000F`, etc.) |
+| **CLASS**  | 2 bytes  | সাধারণত `IN` (Internet = `0x0001`) |
+| **TTL**    | 4 bytes  | কতক্ষণ cache করা যাবে (seconds) |
+| **RDLENGTH** | 2 bytes | RDATA-এর byte length |
+| **RDATA**  | Variable | আসল তথ্য (যেমন IP address, NS name, MX preference + domain) |
+
+---
+
+## 🧾 উদাহরণ: A Record for `www.example.com`
+
+| Field      | Value                  |
+|------------|------------------------|
+| NAME       | `www.example.com` → `03 77 77 77 07 65 78 61 6D 70 6C 65 03 63 6F 6D 00` |
+| TYPE       | `00 01` (A record)     |
+| CLASS      | `00 01` (IN)           |
+| TTL        | `00 00 0E 10` (3600 sec) |
+| RDLENGTH   | `00 04`                |
+| RDATA      | `5D B8 D8 22` → `93.184.216.34` |
+
+✅ মোট: NAME (17 bytes) + 2 + 2 + 4 + 2 + 4 = **31 bytes**
+
+---
 
 ---
 
