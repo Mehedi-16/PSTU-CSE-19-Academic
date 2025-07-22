@@ -73,6 +73,87 @@ DNS মেসেজ হলো DNS ক্লায়েন্ট ও সার্�
 | QCLASS  | `IN`                 | Internet class |
 
 ✅ Query ও Response Message—উভয়েই থাকে
+---
+
+## ❓ Question Section – Binary Format Breakdown
+
+### 🔹 Structure Overview
+
+```plaintext
++------------------------------+
+| QNAME (variable length)      |
++------------------------------+
+| QTYPE (2 bytes)              |
++------------------------------+
+| QCLASS (2 bytes)             |
++------------------------------+
+```
+
+---
+
+### 🔍 1. QNAME (Queried Domain Name)
+
+- **Format**: Domain name is encoded as a sequence of labels
+- **Each label**: 
+  - 1 byte length prefix
+  - Followed by label characters (ASCII)
+- **Ends with**: 0x00 (null byte)
+
+#### 🧠 Example: `www.example.com`
+
+```plaintext
+03 'w' 'w' 'w' 
+07 'e' 'x' 'a' 'm' 'p' 'l' 'e' 
+03 'c' 'o' 'm' 
+00
+```
+
+- Total bytes: `1+3 + 1+7 + 1+3 + 1 = 17 bytes`
+
+---
+
+### 🔍 2. QTYPE (Record Type)
+
+- **Size**: 2 bytes
+- **Value for A record**: `0x0001`
+
+| Record Type | Hex Value | Description |
+|-------------|-----------|-------------|
+| A           | `0x0001`  | IPv4 address |
+| AAAA        | `0x001C`  | IPv6 address |
+| MX          | `0x000F`  | Mail exchange |
+| CNAME       | `0x0005`  | Canonical name |
+
+---
+
+### 🔍 3. QCLASS (Class)
+
+- **Size**: 2 bytes
+- **Value for Internet**: `0x0001`
+
+| Class | Hex Value | Description |
+|-------|-----------|-------------|
+| IN    | `0x0001`  | Internet |
+| CH    | `0x0003`  | Chaos |
+| HS    | `0x0004`  | Hesiod |
+
+---
+
+## 🧾 Full Encoded Example (www.example.com, A, IN)
+
+```plaintext
+03 77 77 77 07 65 78 61 6D 70 6C 65 03 63 6F 6D 00
+00 01
+00 01
+```
+
+- **QNAME**: 17 bytes
+- **QTYPE**: 2 bytes (`A`)
+- **QCLASS**: 2 bytes (`IN`)
+- **Total**: 21 bytes
+
+
+---
 
 ---
 
