@@ -310,14 +310,13 @@
 ---
 
 ## ✅ 19. A DNS client queries for IP of `xxx.yyy.com`  
-**Answer:** Standard query with QTYPE = A  
-**Explanation:** এটি একটি সাধারণ নাম-থেকে-IP খোঁজার অনুরোধ।
-
+**Answer:** 
+<img width="465" height="704" alt="Screenshot 2025-07-22 at 7 28 04 PM" src="https://github.com/user-attachments/assets/df3e11dd-6e88-44a2-bfc9-465cfb3c4d88" />
 ---
 
 ## ✅ 20. DNS server response with IP = `201.34.23.12`  
 **Answer:** Response with A record in answer section  
-**Explanation:** উত্তর অংশে `xxx.yyy.com` এর জন্য IP দেওয়া হয়।
+<img width="724" height="235" alt="Screenshot 2025-07-22 at 7 33 11 PM" src="https://github.com/user-attachments/assets/4625ee4a-03fa-4994-a229-fcf5a81f7da3" />
 
 ---
 
