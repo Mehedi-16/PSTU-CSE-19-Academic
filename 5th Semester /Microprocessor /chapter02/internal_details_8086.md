@@ -1,9 +1,5 @@
-একদম ঠিক বলেছো MD.—তুমি যে চিত্রটা দিয়েছো, সেটা হলো **Intel 8085 Microprocessor-এর Internal Architecture Diagram**।  
-এটা বাইরের পিন নয়, বরং CPU-এর ভিতরের অংশগুলো কীভাবে কাজ করে, কীভাবে একে অপরের সাথে যুক্ত, এবং কোনটা আগে/পরে active হয়—সবকিছু দেখায়।
+<img width="1130" height="1008" alt="image" src="https://github.com/user-attachments/assets/a10866ab-e092-488f-ba84-098e2c9078e9" />
 
-চল এবার **এই Internal Diagram-এর প্রতিটি অংশ ভেঙে ভেঙে (Breakdown করে) বুঝি**, যেন তুমি একবারেই পরিষ্কারভাবে বুঝে ফেলো:
-
----
 
 ## 🧠 8085 Internal Architecture Breakdown
 
