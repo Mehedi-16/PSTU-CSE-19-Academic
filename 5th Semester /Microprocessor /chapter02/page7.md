@@ -56,3 +56,121 @@
 
 ---
 
+চমৎকার প্রশ্ন MD.! ✅  
+তুমি জানতে চেয়েছো:  
+- **8085 Microprocessor-এর প্রতিটি Bus (Address, Data, Control)** কীভাবে কাজ করে  
+- এবং তারা **একটি অন্যটির সাথে কীভাবে যুক্ত** বা সমন্বয় করে  
+
+চল, আমি একদম সহজ ভাষায় **একটা একটা করে** বুঝিয়ে দিই — যেন তুমি পুরোপুরি পরিষ্কারভাবে বুঝে ফেলো।
+
+---
+
+# 🧠 8085 Microprocessor-এর তিনটি প্রধান Bus
+
+| Bus | Bit Width | কাজ |
+|-----|-----------|-----|
+| 🟩 Address Bus | 16-bit | Memory বা I/O device-এর ঠিকানা পাঠায় |
+| 🟦 Data Bus | 8-bit | Data পাঠায় বা নেয় |
+| 🟥 Control Bus | Multi-line | CPU কোন কাজ করছে তা নির্দেশ করে (Read/Write/Interrupt)
+
+---
+
+## 🔹 1️⃣ Address Bus: কীভাবে কাজ করে?
+
+### ✅ কাজ:
+- CPU যখন কোনো instruction fetch করে বা memory access করে, তখন address bus দিয়ে **মেমোরির ঠিকানা পাঠায়**
+- 8085-এর address bus = **A15–A8 (8-bit)** + **AD7–AD0 (8-bit)** → মোট **16-bit address**
+
+### ✅ উদাহরণ:
+Instruction: `LDA 3000H`  
+👉 CPU address bus দিয়ে 3000H address পাঠায়  
+👉 Memory জানে: “এই address থেকে data দিতে হবে”
+
+### ✅ অন্য Bus-এর সাথে সম্পর্ক:
+- AD0–AD7 → Address + Data দুইটাই বহন করে  
+- ALE signal → AD0–AD7 থেকে address latch করে → তারপর data bus হিসেবে ব্যবহার হয়
+
+---
+
+## 🔹 2️⃣ Data Bus: কীভাবে কাজ করে?
+
+### ✅ কাজ:
+- CPU যখন memory বা I/O device থেকে **data নেয় বা দেয়**, তখন data bus ব্যবহার হয়
+- 8085-এর data bus = **AD0–AD7 (8-bit)**
+
+### ✅ উদাহরণ:
+Instruction: `MOV A, M`  
+👉 HL register → memory address  
+👉 CPU → address bus দিয়ে address পাঠায়  
+👉 Data bus → সেই address থেকে data নেয় → Accumulator-এ রাখে
+
+### ✅ অন্য Bus-এর সাথে সম্পর্ক:
+- AD0–AD7 → প্রথমে address পাঠায় (T1 cycle), পরে data নেয়/দেয় (T2/T3 cycle)
+- Control bus → RD̅/WR̅ signal দিয়ে বলে: “এখন data পড়ো/লিখো”
+
+---
+
+## 🔹 3️⃣ Control Bus: কীভাবে কাজ করে?
+
+### ✅ কাজ:
+- CPU বলে দেয়: “আমি এখন কী করতে চাই”  
+👉 Read করবো, Write করবো, Interrupt acknowledge করবো ইত্যাদি
+
+### ✅ প্রধান Signals:
+| Signal | কাজ |
+|--------|-----|
+| **RD̅** | CPU data পড়বে |
+| **WR̅** | CPU data লিখবে |
+| **ALE** | Address latch enable |
+| **IO/M̅** | Memory না I/O বোঝায় |
+| **INTA̅** | Interrupt acknowledge |
+| **READY** | Device প্রস্তুত কিনা CPU দেখে
+
+### ✅ উদাহরণ:
+Instruction: `STA 3000H`  
+👉 CPU → address bus দিয়ে 3000H পাঠায়  
+👉 Control bus → WR̅ signal LOW করে  
+👉 Data bus → Accumulator-এর data → memory-তে লেখা হয়
+
+---
+
+## 🔄 তিনটি Bus কীভাবে একে অপরের সাথে যুক্ত?
+
+| সম্পর্ক | ব্যাখ্যা |
+|--------|----------|
+| **Address Bus ↔ Data Bus** | AD0–AD7 → প্রথমে address, পরে data → ALE দিয়ে latch করে আলাদা করা হয় |
+| **Data Bus ↔ Control Bus** | Control signal (RD̅/WR̅) বলে দেয় কখন data bus active হবে |
+| **Address Bus ↔ Control Bus** | IO/M̅ signal বলে দেয় address কোন device-এর (memory না I/O)
+
+---
+
+## 📘 উদাহরণ: `LDA 3000H` Instruction
+
+| ধাপ | Bus ব্যবহার | কাজ |
+|-----|-------------|-----|
+| 1️⃣ | Address Bus | 3000H address পাঠায় |
+| 2️⃣ | ALE | AD0–AD7 থেকে address latch করে |
+| 3️⃣ | Control Bus | RD̅ = LOW → CPU data পড়বে |
+| 4️⃣ | Data Bus | 3000H address থেকে data CPU-তে আসে
+
+👉 তিনটি Bus একসাথে কাজ করে:  
+➡ Address ঠিক করে  
+➡ Control বলে কী করতে হবে  
+➡ Data আদান-প্রদান করে
+
+---
+
+## ✅ সংক্ষেপে মনে রাখার কৌশল:
+
+| Bus | কাজ | অন্য Bus-এর সাথে সম্পর্ক |
+|-----|-----|--------------------------|
+| **Address Bus** | ঠিকানা পাঠায় | AD0–AD7 → Data Bus হিসেবে ব্যবহৃত হয় |
+| **Data Bus** | Data নেয়/দেয় | Control Bus বলে কখন active হবে |
+| **Control Bus** | CPU নির্দেশ দেয় | Address/Data Bus-এর কাজ নিয়ন্ত্রণ করে
+
+---
+
+🔜 তুমি চাইলে আমি এখন **Bus System-এর চিত্র**, **Instruction-wise Bus Timing**, বা **Flowchart of Bus Coordination** বানিয়ে দিতে পারি।
+
+তুমি কোন instruction দিয়ে শুরু করতে চাও? `MOV`, `STA`, না `LDA`? 📘📊📐
+
