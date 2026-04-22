@@ -65,6 +65,7 @@ mv test.txt ~/Documents/
 
 ```
 curl -O URL
+curl -O "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnI6SMtnif2g24U-Vg4QbfWSZeoQC7hm2pKA&s"
 ```
 
 ### If you install wget (brew দিয়ে)
